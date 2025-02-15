@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import SlideBar from "../components/SlideBar";
 import Search from "../components/Search";
 import Table from "../components/Table";
-import Print from "../components/Print";
 import AddItems from "../components/AddItems";
 import SearchResultsList from "../components/SearchResultsList";
+import Total from "../components/Total";
 
 const InventoryPage = () => {
   const [results, setResults] = useState([]);
@@ -18,7 +18,7 @@ const InventoryPage = () => {
           <SearchResultsList results={results} />
           <Table />
           <AddItems />
-          <Print />
+          <Total />
         </div>
       </div>
     </div>
