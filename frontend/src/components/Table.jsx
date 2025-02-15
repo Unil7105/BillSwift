@@ -27,7 +27,7 @@ const Table = () => {
 
   return (
     <>
-      <div className="mt-10 max-w-[90%] overflow-hidden rounded-lg shadow-lg border border-gray-300">
+      <div className="mt-10 w-[90%] overflow-hidden rounded-lg shadow-lg border border-gray-300">
         <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
           <thead>
             <tr className="bg-white text-black">
