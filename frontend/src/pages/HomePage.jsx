@@ -6,7 +6,7 @@ const HomePage = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white">
+    <div className="flex flex-col items-center justify-center gap-5 h-screen bg-gray-900 text-white">
       <h1 className="text-4xl font-bold mb-6">Welcome to BillSwift</h1>
       <p className="text-lg mb-4">Manage your billing efficiently.</p>
       <button

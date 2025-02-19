@@ -2,22 +2,12 @@ import React, { useState } from "react";
 import SlideBar from "../components/SlideBar";
 import Search from "../components/Search";
 import Table from "../components/Table";
-import Button from "../components/Button";
+// import AddItems from "../components/AddItems";
 import SearchResultsList from "../components/SearchResultsList";
-import { useNavigate } from 'react-router-dom';
+import Total from "../components/Total";
 
-const InventoryPage = () => {
-  const navigate = useNavigate();
+const BillPage = () => {
   const [results, setResults] = useState([]);
-
-  const handleAddClick = () => {
-    // Handle add item logic here
-    console.log("Add item clicked");
-  };
-
-  const handleGenerateBill = () => {
-    navigate("/bill");
-  };
 
   return (
     <div>
@@ -27,14 +17,11 @@ const InventoryPage = () => {
           <Search setResults={setResults} />
           <SearchResultsList results={results} />
           <Table />
-          <div className="flex gap-6 self-end mr-20">
-            <Button name="Add Item" onClick={handleAddClick} />
-            <Button name="Generate Bill" onClick={handleGenerateBill} />
-          </div>
+          <Total />
         </div>
       </div>
     </div>
   );
 };
 
-export default InventoryPage;
+export default BillPage;
