@@ -29,10 +29,16 @@ const InventoryPage = () => {
       <div className="flex">
         <SlideBar />
         <div className="w-[100%] flex flex-col items-center">
-          <Search setResults={setResults} />
-          <SearchResultsList results={results} />
+          <div className="relative w-full">
+            <Search setResults={setResults} />
+            {results.length > 0 && (
+              <div className="absolute w-full z-10">
+                <SearchResultsList results={results} />
+              </div>
+            )}
+          </div>
           <Table />
-          <div className="flex gap-6 self-end mt-10 mr-20">
+          <div className="flex gap-6 self-end mt-10 mr-15">
             <Button name="Add Item" onClick={handleAddClick} />
             <Button name="Generate Bill" onClick={handleGenerateBill} />
           </div>

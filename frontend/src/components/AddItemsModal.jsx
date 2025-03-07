@@ -4,7 +4,7 @@ import Button from "./Button";
 const AddItemsModal = ({ isOpen, onClose }) => {
   const MyModal = () => {
     return (
-      <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center">
+      <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center text-[15px]">
         <div className="bg-white p-6 rounded-lg shadow-lg w-[auto] flex flex-col gap-10">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold">Add Your Item</h2>

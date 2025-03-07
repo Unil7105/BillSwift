@@ -10,7 +10,7 @@ const SearchResult = ({ result }) => {
       onClick={handleClick}
       role="button"
       tabIndex={0}
-      className="p-4 hover:bg-[#efefef] font-semibold cursor-pointer focus:outline-none focus:bg-[#e0e0e0]"
+      className="p-3 hover:bg-[#efefef] font-semibold text-[13px] cursor-pointer focus:outline-none focus:bg-[#e0e0e0]"
     >
       {result?.itemCode || "No Item Code"}
     </div>

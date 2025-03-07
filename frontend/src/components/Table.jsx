@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { HiPencilAlt } from "react-icons/hi";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 const Table = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleAddClick = () => {
-    navigate('/edit')
-  }
+    navigate("/edit");
+  };
 
   const [items, setItems] = useState([]);
 
@@ -27,7 +26,7 @@ const Table = () => {
 
   return (
     <>
-      <div className="mt-10 w-[90%] overflow-hidden rounded-lg shadow-lg border border-gray-300">
+      <div className="mt-10 w-[90%] overflow-hidden rounded-lg shadow-lg border border-gray-300 text-[12px]">
         <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
           <thead>
             <tr className="bg-white text-black">
@@ -59,14 +58,27 @@ const Table = () => {
                   <td className="border border-gray-300 px-6 py-3">
                     {i.product}
                   </td>
+
                   <td className="border border-gray-300 px-6 py-3 text-center cursor-pointer group">
-                    <HiPencilAlt onClick={handleAddClick} className="text-2xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity" />
-                    {i.quantity}
+                    <div className="flex items-center justify-center space-x-2">
+                      <HiPencilAlt
+                        onClick={handleAddClick}
+                        className="text-xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+                      />
+                      {i.quantity}
+                    </div>
                   </td>
+
                   <td className="border border-gray-300 px-6 py-3 text-center cursor-pointer group">
-                    <HiPencilAlt onClick={handleAddClick} className="text-2xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity" />
-                    ₹{i.mrp}
+                    <div className="flex items-center justify-center space-x-2">
+                      <HiPencilAlt
+                        onClick={handleAddClick}
+                        className="text-xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+                      />
+                      {i.mrp}
+                    </div>
                   </td>
+
                   <td className="border border-gray-300 px-6 py-3 text-center">
                     ₹{i.netamt}
                   </td>

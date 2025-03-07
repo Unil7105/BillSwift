@@ -32,10 +32,10 @@ const Total = () => {
 
   return (
     <div className="flex justify-end mt-10 w-[90%] gap-7">
-      <button className="px-3 text-[20px] p-3 rounded-[7px] border border-gray-300 font-bold transition-all duration-300 [&:hover]:bg-gray-900 [&:hover]:text-white">
+      <button className="px-3 text-[15px] p-3 rounded-[7px] border border-gray-300 font-bold transition-all duration-300 [&:hover]:bg-gray-900 [&:hover]:text-white">
         Print
       </button>
-      <div className="border text-[20px] p-3 bg-gray-900 text-white rounded-[10px]">
+      <div className="border text-[15px] p-3 bg-gray-900 text-white rounded-[10px]">
         Total: {total.toLocaleString()} Rs
       </div>
     </div>

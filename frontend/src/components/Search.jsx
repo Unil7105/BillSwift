@@ -21,12 +21,12 @@ const SearchBar = ({setResults}) => {
   };
 
   return (
-    <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2 bg-white w-[90%] h-[50px] mt-10 gap-2">
-      <FaSearch className="text-gray-500 mr-2 text-2xl" />
+    <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2 ml-15 bg-white w-[90%] h-[35px] mt-10 gap-2">
+      <FaSearch className="text-gray-500 mr-2 text-[15px]" />
       <input
         type="text"
         placeholder="Search Bar"
-        className="outline-none bg-transparent w-full text-[17px] text-black placeholder-gray-400"
+        className="outline-none bg-transparent w-full text-[15px] text-black placeholder-gray-400"
         value={input}
         onChange={(e) => handleChange(e.target.value)}
       />
