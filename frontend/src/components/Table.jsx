@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { HiPencilAlt } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
-
+import EditItemsModal from "./EditItemsModal";
+import axios from 'axios'
+ 
 const Table = () => {
-  const navigate = useNavigate();
 
-  const handleAddClick = () => {
-    navigate("/edit");
+  const [showModal, setShowModal] = useState(false);
+
+  const handleEditClick = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch("http://localhost:5001/api/items");
-        const data = await res.json();
-        setItems(data.items || []);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
+    axios.get('http://localhost:5001')
+    .then(result => setItems(result.data))
+    .catch(err => console.log(err))
+  }, [])
 
   return (
     <>
@@ -62,7 +62,7 @@ const Table = () => {
                   <td className="border border-gray-300 px-6 py-3 text-center cursor-pointer group">
                     <div className="flex items-center justify-center space-x-2">
                       <HiPencilAlt
-                        onClick={handleAddClick}
+                        onClick={handleEditClick}
                         className="text-xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
                       />
                       {i.quantity}
@@ -72,7 +72,7 @@ const Table = () => {
                   <td className="border border-gray-300 px-6 py-3 text-center cursor-pointer group">
                     <div className="flex items-center justify-center space-x-2">
                       <HiPencilAlt
-                        onClick={handleAddClick}
+                        onClick={handleEditClick}
                         className="text-xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
                       />
                       {i.mrp}
@@ -93,6 +93,7 @@ const Table = () => {
             )}
           </tbody>
         </table>
+        <EditItemsModal isOpen={showModal} onClose={handleCloseModal} />
       </div>
     </>
   );

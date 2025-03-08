@@ -4,7 +4,7 @@ import Search from "../components/Search";
 import Table from "../components/Table";
 import Button from "../components/Button";
 import SearchResultsList from "../components/SearchResultsList";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import AddItemsModal from "../components/AddItemsModal";
 
 const InventoryPage = () => {

@@ -5,10 +5,10 @@ const SearchBar = ({setResults}) => {
   const [input, setInput] = useState("");
 
   const fetchData = (value) => {
-    fetch("http://localhost:5001/api/items")
+    fetch("http://localhost:5001/")
       .then((res) => res.json())
       .then((data) => {
-        const results = data.items.filter((item) => {
+        const results = data.filter((item) => {
           return item && item.itemCode && item.itemCode.toLowerCase().includes(value.toLowerCase());
         });
         setResults(results)

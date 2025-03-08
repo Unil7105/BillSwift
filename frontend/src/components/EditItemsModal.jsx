@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "./Button";
 
-const EditItemsModal = ({ isOpen, onClose }) => {
+const EditItemsModal = ({ isOpen, onClose}) => {
   const MyModal = () => {
     return (
       <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center">
@@ -37,7 +37,7 @@ const EditItemsModal = ({ isOpen, onClose }) => {
               placeholder="Enter Mrp"
             />
           </form>
-          <Button name={"Save"} onClick={onClose} />
+          <Button name={"Edit"} onClick={onClose} />
         </div>
       </div>
     );
