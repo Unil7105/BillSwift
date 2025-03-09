@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { HiPencilAlt } from "react-icons/hi";
 import { MdDelete } from "react-icons/md";
 import EditItemsModal from "./EditItemsModal";
+import AddItemsModal from "./AddItemsModal"; // Import if you need to add items from the table
 import axios from "axios";
 
 const Table = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false); // Add this if you need the add button
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [items, setItems] = useState([]);
 
@@ -24,12 +26,24 @@ const Table = () => {
 
   const handleEditClick = (itemId) => {
     setSelectedItemId(itemId);
-    setShowModal(true);
+    setShowEditModal(true);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
     setSelectedItemId(null);
+    // Refresh items after editing
+    fetchItems();
+  };
+
+  const handleAddClick = () => {
+    setShowAddModal(true);
+  };
+
+  const handleCloseAddModal = () => {
+    setShowAddModal(false);
+    // Refresh items after adding
+    fetchItems();
   };
 
   // Function to refresh items after editing
@@ -47,6 +61,16 @@ const Table = () => {
   return (
     <>
       <div className="mt-10 w-[90%] overflow-hidden rounded-lg shadow-lg border border-gray-300 text-[12px]">
+        {/* Add button if needed */}
+        {/* <div className="flex justify-end p-4">
+          <button 
+            onClick={handleAddClick}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Add New Item
+          </button>
+        </div> */}
+
         <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
           <thead>
             <tr className="bg-white text-black">
@@ -120,11 +144,18 @@ const Table = () => {
           </tbody>
         </table>
         
-        {/* Render modal directly without wrapping in Link */}
+        {/* Edit Modal */}
         <EditItemsModal 
-          isOpen={showModal} 
-          onClose={handleCloseModal} 
+          isOpen={showEditModal} 
+          onClose={handleCloseEditModal} 
           itemId={selectedItemId} 
+        />
+
+        {/* Add Modal */}
+        <AddItemsModal 
+          isOpen={showAddModal} 
+          onClose={handleCloseAddModal} 
+          onItemAdded={fetchItems}
         />
       </div>
     </>

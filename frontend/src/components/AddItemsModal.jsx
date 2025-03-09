@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
-const AddItemsModal = ({ isOpen, onClose }) => {
+const AddItemsModal = ({ isOpen, onClose, onItemAdded }) => {
   const [itemCode, setItemCode] = useState("");
   const [quantity, setQuantity] = useState("");
   const [product, setProduct] = useState("");
@@ -24,8 +24,13 @@ const AddItemsModal = ({ isOpen, onClose }) => {
     })
     .then(result => {
       console.log(result);
-      navigate("/inventory")
-      onClose(); 
+      // Call the callback function to notify parent component
+      if (onItemAdded) {
+        onItemAdded();
+      }
+      onClose();
+      // Remove the navigate call as it's refreshing the whole page
+      // navigate("/inventory") 
     })
     .catch(err => console.log(err));
   }
@@ -90,4 +95,4 @@ const AddItemsModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default AddItemsModal;
+export default AddItemsModal; 

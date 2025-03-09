@@ -29,29 +29,26 @@ const EditItemsModal = ({ isOpen, onClose, itemId }) => {
     }
   }, [isOpen, itemId]);
   
-  const handleEdit = (e) => {
-    e.preventDefault();
-    // Prevent bubbling of click event
-    e.stopPropagation();
-
-    const netamt = Number(quantity) * Number(mrp);
-    
-    const updatedItem = {
-      itemCode,
-      product,
-      quantity,
-      mrp, 
-      netamt
-    };
-    
-    axios
-      .put("http://localhost:5001/updateItem/" + itemId, updatedItem)
-      .then(() => {
-        onClose();
-        // Reload or refresh data if needed
-      })
-      .catch(err => console.log(err));
+// In EditItemsModal.jsx
+const handleEdit = (e) => {
+  e.preventDefault();
+  // Prevent bubbling of click event
+  e.stopPropagation();
+  
+  const updatedItem = {
+    itemCode,
+    product,
+    quantity,
+    mrp
   };
+  
+  axios
+    .put("http://localhost:5001/updateItem/" + itemId, updatedItem)
+    .then(() => {
+      onClose(); // This will now trigger fetchItems() in the parent component
+    })
+    .catch(err => console.log(err));
+};
 
   if (!isOpen) return null;
 
