@@ -1,28 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { HiPencilAlt } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
+import { MdDelete } from "react-icons/md";
 import EditItemsModal from "./EditItemsModal";
-import axios from 'axios'
- 
+import axios from "axios";
+
 const Table = () => {
-
   const [showModal, setShowModal] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [items, setItems] = useState([]);
 
-  const handleEditClick = () => {
+  const handleDeleteClick = (itemId) => {
+    // Confirm before deleting
+    if (window.confirm('Are you sure you want to delete this item?')) {
+      axios
+        .delete(`http://localhost:5001/deleteItem/${itemId}`)
+        .then(() => {
+          // After successful deletion, refresh the items list
+          fetchItems();
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleEditClick = (itemId) => {
+    setSelectedItemId(itemId);
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
+    setSelectedItemId(null);
   };
 
-  const [items, setItems] = useState([]);
+  // Function to refresh items after editing
+  const fetchItems = () => {
+    axios
+      .get("http://localhost:5001")
+      .then((result) => setItems(result.data))
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
-    axios.get('http://localhost:5001')
-    .then(result => setItems(result.data))
-    .catch(err => console.log(err))
-  }, [])
+    fetchItems();
+  }, []);
 
   return (
     <>
@@ -62,7 +82,7 @@ const Table = () => {
                   <td className="border border-gray-300 px-6 py-3 text-center cursor-pointer group">
                     <div className="flex items-center justify-center space-x-2">
                       <HiPencilAlt
-                        onClick={handleEditClick}
+                        onClick={() => handleEditClick(i._id)}
                         className="text-xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
                       />
                       {i.quantity}
@@ -72,15 +92,21 @@ const Table = () => {
                   <td className="border border-gray-300 px-6 py-3 text-center cursor-pointer group">
                     <div className="flex items-center justify-center space-x-2">
                       <HiPencilAlt
-                        onClick={handleEditClick}
+                        onClick={() => handleEditClick(i._id)}
                         className="text-xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
                       />
                       {i.mrp}
                     </div>
                   </td>
 
-                  <td className="border border-gray-300 px-6 py-3 text-center">
-                    ₹{i.netamt}
+                  <td className="border border-gray-300 px-6 py-3 text-center cursor-pointer group">
+                    <div className="flex items-center justify-center space-x-2">
+                      {i.netamt}
+                      <MdDelete 
+                        onClick={() => handleDeleteClick(i._id)}
+                        className="text-xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+                      />
+                    </div>
                   </td>
                 </tr>
               ))
@@ -93,7 +119,13 @@ const Table = () => {
             )}
           </tbody>
         </table>
-        <EditItemsModal isOpen={showModal} onClose={handleCloseModal} />
+        
+        {/* Render modal directly without wrapping in Link */}
+        <EditItemsModal 
+          isOpen={showModal} 
+          onClose={handleCloseModal} 
+          itemId={selectedItemId} 
+        />
       </div>
     </>
   );
