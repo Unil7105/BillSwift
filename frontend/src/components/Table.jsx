@@ -10,15 +10,13 @@ const Table = ({ items, setItems }) => {
 
   const handleDeleteClick = (itemId) => {
     // Confirm before deleting
-    if (window.confirm("Are you sure you want to delete this item?")) {
-      axios
-        .delete(`http://localhost:5001/deleteItem/${itemId}`)
-        .then(() => {
-          // After successful deletion, update items state directly
-          setItems(items.filter(item => item._id !== itemId));
-        })
-        .catch((err) => console.log(err));
-    }
+    axios
+      .delete(`http://localhost:5001/deleteItem/${itemId}`)
+      .then(() => {
+        // After successful deletion, update items state directly
+        setItems(items.filter((item) => item._id !== itemId));
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleEditClick = (itemId) => {
@@ -33,8 +31,8 @@ const Table = ({ items, setItems }) => {
 
   const handleItemUpdated = (updatedItem) => {
     // Update the items array with the updated item
-    setItems(prevItems => 
-      prevItems.map(item => 
+    setItems((prevItems) =>
+      prevItems.map((item) =>
         item._id === updatedItem._id ? updatedItem : item
       )
     );
@@ -133,11 +131,11 @@ const Table = ({ items, setItems }) => {
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
         }
-        
+
         /* Hide scrollbar for IE, Edge and Firefox */
         .scrollbar-hide {
-          -ms-overflow-style: none;  /* IE and Edge */
-          scrollbar-width: none;  /* Firefox */
+          -ms-overflow-style: none; /* IE and Edge */
+          scrollbar-width: none; /* Firefox */
         }
       `}</style>
     </>
