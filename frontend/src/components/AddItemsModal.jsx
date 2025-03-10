@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 
 const AddItemsModal = ({ isOpen, onClose, onItemAdded }) => {
   const [itemCode, setItemCode] = useState("");
   const [quantity, setQuantity] = useState("");
   const [product, setProduct] = useState("");
   const [mrp, setMrp] = useState("");
-
-  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,13 +21,19 @@ const AddItemsModal = ({ isOpen, onClose, onItemAdded }) => {
     })
     .then(result => {
       console.log(result);
-      // Call the callback function to notify parent component
+      // Pass the newly created item back to the parent component
       if (onItemAdded) {
-        onItemAdded();
+        onItemAdded(result.data);
       }
+      
+      // Clear the form
+      setItemCode("");
+      setQuantity("");
+      setProduct("");
+      setMrp("");
+      
+      // Close the modal
       onClose();
-      // Remove the navigate call as it's refreshing the whole page
-      // navigate("/inventory") 
     })
     .catch(err => console.log(err));
   }
@@ -59,6 +62,7 @@ const AddItemsModal = ({ isOpen, onClose, onItemAdded }) => {
               placeholder="Enter ItemCode"
               value={itemCode}
               onChange={(e) => setItemCode(e.target.value)}
+              required
             />
             <input
               className="border p-3"
@@ -66,6 +70,7 @@ const AddItemsModal = ({ isOpen, onClose, onItemAdded }) => {
               placeholder="Enter Product"
               value={product}
               onChange={(e) => setProduct(e.target.value)}
+              required
             />
             <input
               className="border p-3"
@@ -73,6 +78,7 @@ const AddItemsModal = ({ isOpen, onClose, onItemAdded }) => {
               placeholder="Enter Quantity"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
+              required
             />
             <input
               className="border p-3"
@@ -80,6 +86,7 @@ const AddItemsModal = ({ isOpen, onClose, onItemAdded }) => {
               placeholder="Enter Mrp"
               value={mrp}
               onChange={(e) => setMrp(e.target.value)}
+              required
             />
           </div>
           
@@ -95,4 +102,4 @@ const AddItemsModal = ({ isOpen, onClose, onItemAdded }) => {
   );
 };
 
-export default AddItemsModal; 
+export default AddItemsModal;

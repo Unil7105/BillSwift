@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SlideBar from "../components/SlideBar";
 import Search from "../components/Search";
 import Table from "../components/Table";
@@ -6,11 +6,13 @@ import Button from "../components/Button";
 import SearchResultsList from "../components/SearchResultsList";
 import { useNavigate } from "react-router-dom";
 import AddItemsModal from "../components/AddItemsModal";
+import axios from "axios";
 
 const InventoryPage = () => {
   const navigate = useNavigate();
   const [results, setResults] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [items, setItems] = useState([]);
 
   const handleAddClick = () => {
     setShowModal(true);
@@ -23,6 +25,22 @@ const InventoryPage = () => {
   const handleGenerateBill = () => {
     navigate("/bill");
   };
+
+  const handleItemAdded = (newItem) => {
+    setItems(prevItems => [...prevItems, newItem]);
+  };
+
+  // Function to refresh items
+  const fetchItems = () => {
+    axios
+      .get("http://localhost:5001")
+      .then((result) => setItems(result.data))
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
   return (
     <div>
@@ -37,14 +55,18 @@ const InventoryPage = () => {
               </div>
             )}
           </div>
-          <Table />
+          <Table items={items} setItems={setItems} />
           <div className="flex gap-6 self-end mt-10 mr-15">
             <Button name="Add Item" onClick={handleAddClick} />
             <Button name="Generate Bill" onClick={handleGenerateBill} />
           </div>
         </div>
       </div>
-      <AddItemsModal isOpen={showModal} onClose={handleCloseModal} />
+      <AddItemsModal 
+        isOpen={showModal} 
+        onClose={handleCloseModal} 
+        onItemAdded={handleItemAdded} 
+      />
     </div>
   );
 };

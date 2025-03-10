@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Button from "./Button";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-const EditItemsModal = ({ isOpen, onClose, itemId }) => {
+const EditItemsModal = ({ isOpen, onClose, itemId, onItemUpdated }) => {
   // Move state and hooks to the parent component
   const [itemCode, setItemCode] = useState("");
   const [quantity, setQuantity] = useState("");
   const [product, setProduct] = useState("");
   const [mrp, setMrp] = useState("");
-  
-  const navigate = useNavigate();
+  const [originalItem, setOriginalItem] = useState(null);
 
   // Use the passed itemId instead of useParams
   useEffect(() => {
@@ -19,6 +17,8 @@ const EditItemsModal = ({ isOpen, onClose, itemId }) => {
         .get("http://localhost:5001/getItem/" + itemId)
         .then((result) => {
           const item = result.data;
+          // Store the original item for reference
+          setOriginalItem(item);
           // Populate form with data from API
           setItemCode(item.itemCode || "");
           setProduct(item.product || "");
@@ -29,26 +29,33 @@ const EditItemsModal = ({ isOpen, onClose, itemId }) => {
     }
   }, [isOpen, itemId]);
   
-// In EditItemsModal.jsx
-const handleEdit = (e) => {
-  e.preventDefault();
-  // Prevent bubbling of click event
-  e.stopPropagation();
-  
-  const updatedItem = {
-    itemCode,
-    product,
-    quantity,
-    mrp
+  const handleEdit = (e) => {
+    e.preventDefault();
+    // Prevent bubbling of click event
+    e.stopPropagation();
+
+    const netamt = Number(quantity) * Number(mrp);
+    
+    const updatedItem = {
+      _id: itemId,
+      itemCode,
+      product,
+      quantity,
+      mrp,
+      netamt
+    };
+    
+    axios
+      .put("http://localhost:5001/updateItem/" + itemId, updatedItem)
+      .then((response) => {
+        // Call the callback with the updated item to update parent state
+        if (onItemUpdated) {
+          onItemUpdated(updatedItem);
+        }
+        onClose();
+      })
+      .catch(err => console.log(err));
   };
-  
-  axios
-    .put("http://localhost:5001/updateItem/" + itemId, updatedItem)
-    .then(() => {
-      onClose(); // This will now trigger fetchItems() in the parent component
-    })
-    .catch(err => console.log(err));
-};
 
   if (!isOpen) return null;
 
@@ -106,7 +113,7 @@ const handleEdit = (e) => {
             onChange={(e) => setMrp(e.target.value)}
           />
         </form>
-        <Button name={"Edit"} onClick={handleEdit} />
+        <Button name={"Save Changes"} onClick={handleEdit} />
       </div>
     </div>
   );
