@@ -1,21 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import SlideBar from "../components/SlideBar";
-import Search from "../components/Search";
+import SearchItem from "../components/SearchItem";
 import Table from "../components/Table";
-// import AddItems from "../components/AddItems";
-import SearchResultsList from "../components/SearchResultsList";
-import Total from "../components/Total";
+import Total from "../components/Total"
 
 const BillPage = () => {
-  const [results, setResults] = useState([]);
-
   return (
     <div>
       <div className="flex">
         <SlideBar />
         <div className="w-[100%] flex flex-col items-center">
-          <Search setResults={setResults} />
-          <SearchResultsList results={results} />
+          <div className="relative w-full">
+            <SearchItem />
+          </div>
           <Table />
           <Total />
         </div>
