@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaSearch } from "react-icons/fa";
 
-const SearchItem = () => {
+const SearchItem = ({ onItemSelect }) => {
   const [input, setInput] = useState("");
   const [results, setResults] = useState([]);
   const [showResults, setShowResults] = useState(true);
   const [selectedItem, setSelectedItem] = useState(-1);
   const resultsRef = useRef(null);
+
+  useEffect(() => {
+    console.log("Updated input value:", input);
+  }, [input]);
 
   useEffect(() => {
     // Reset selected item when results change
@@ -32,15 +36,21 @@ const SearchItem = () => {
       return;
     }
 
-    fetch("http://localhost:5001/")
-      .then((res) => res.json())
-      .then((data) => {
-        const filteredResults = data.filter((item) => {
-          return item && item.product && item.product.toLowerCase().includes(value.toLowerCase());
+    // Only search if the input doesn't have the format "product - quantity - price"
+    if (!value.includes(" - ")) {
+      fetch("http://localhost:5001/")
+        .then((res) => res.json())
+        .then((data) => {
+          const filteredResults = data.filter((item) => {
+            return item && item.product && item.product.toLowerCase().includes(value.toLowerCase());
+          });
+          setResults(filteredResults);
+          setShowResults(true);
         });
-        setResults(filteredResults);
-        setShowResults(true);
-      });
+    } else {
+      setResults([]);
+      setShowResults(false);
+    }
   };
 
   const handleChange = (value) => {
@@ -49,26 +59,48 @@ const SearchItem = () => {
   };
 
   const handleResultClick = (result) => {
-    setInput(result.product);
+    // Set the formatted input
+    const formattedInput = `${result.product} - ${result.quantity || 1} - ${result.mrp || 0}`;
+    setInput(formattedInput);
     setShowResults(false);
-    alert(`You clicked ${result?.product}`);
   };
 
   const handleKeyDown = (e) => {
-    if (!results.length) return;
-
-    if (e.key === "ArrowUp") {
+    if (e.key === "Enter") {
+      // Check if input has the format "product - quantity - price"
+      if (input.includes(" - ")) {
+        const parts = input.split(" - ");
+        if (parts.length === 3) {
+          const product = parts[0];
+          const quantity = parseInt(parts[1], 10) || 1;
+          const mrp = parseFloat(parts[2]) || 0;
+          
+          // Create item object
+          const item = {
+            product: product,
+            quantity: quantity,
+            mrp: mrp,
+            itemCode: "MANUAL-" + Date.now().toString().slice(-6)
+          };
+          
+          // Add item to table
+          onItemSelect(item);
+          
+          // Clear input after adding
+          setInput("");
+        }
+      } else if (results.length > 0 && selectedItem >= 0) {
+        const selectedResult = results[selectedItem];
+        if (selectedResult) {
+          handleResultClick(selectedResult);
+        }
+      }
+    } else if (e.key === "ArrowUp" && results.length > 0) {
       e.preventDefault();
       setSelectedItem((prev) => (prev <= 0 ? results.length - 1 : prev - 1));
-    } else if (e.key === "ArrowDown") {
+    } else if (e.key === "ArrowDown" && results.length > 0) {
       e.preventDefault();
       setSelectedItem((prev) => (prev >= results.length - 1 ? 0 : prev + 1));
-    } else if (e.key === "Enter" && selectedItem >= 0) {
-      e.preventDefault();
-      const selectedResult = results[selectedItem];
-      if (selectedResult) {
-        handleResultClick(selectedResult);
-      }
     } else if (e.key === "Escape") {
       setShowResults(false);
     }
@@ -85,7 +117,7 @@ const SearchItem = () => {
           value={input}
           onChange={(e) => handleChange(e.target.value)}
           onFocus={() => {
-            if (input.trim() && results.length > 0) {
+            if (input.trim() && results.length > 0 && !input.includes(" - ")) {
               setShowResults(true);
             }
           }}
@@ -94,7 +126,7 @@ const SearchItem = () => {
       </div>
 
       {/* Search Results */}
-      {showResults && results.length > 0 && input.trim() !== "" && (
+      {showResults && results.length > 0 && input.trim() !== "" && !input.includes(" - ") && (
         <div 
           ref={resultsRef}
           className="absolute top-[75px] w-[90%] bg-white border border-gray-300 flex flex-col shadow-md max-h-[200px] overflow-y-auto scrollbar-hide z-10"
@@ -121,3 +153,5 @@ const SearchItem = () => {
 };
 
 export default SearchItem;
+
+
