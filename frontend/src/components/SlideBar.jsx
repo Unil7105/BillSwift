@@ -19,7 +19,7 @@ const SlideBar = () => {
         <FaHome
           onClick={() => navigate("/")}
           className="text-xl cursor-pointer hover:text-blue-400 transition"
-          title="Home"
+          title="Home"  
         />
         <FaFileAlt
           className="text-xl cursor-pointer hover:text-blue-400 transition"

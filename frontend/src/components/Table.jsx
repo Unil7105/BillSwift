@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { HiPencilAlt } from "react-icons/hi";
 import { MdDelete } from "react-icons/md";
 import EditItemsModal from "./EditItemsModal";
@@ -7,6 +7,20 @@ import axios from "axios";
 const Table = ({ items, setItems, highlightedItemId }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
+
+  // Create refs for the highlighted row
+  const highlightedRowRef = useRef(null);
+
+  // Scroll to the highlighted row when highlightedItemId changes
+  useEffect(() => {
+    if (highlightedItemId && highlightedRowRef.current) {
+      // Scroll the highlighted row into view with smooth animation
+      highlightedRowRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [highlightedItemId]);
 
   const handleDeleteClick = (itemId) => {
     // Confirm before deleting
@@ -67,8 +81,10 @@ const Table = ({ items, setItems, highlightedItemId }) => {
                   return (
                     <tr
                       key={i.itemCode || i._id}
+                      // Set ref conditionally only for the highlighted row
+                      ref={isHighlighted ? highlightedRowRef : null}
                       className={`
-                      border-b transition-all duration-100
+                      border-b transition-all duration-100  
                       ${
                         isHighlighted
                           ? "bg-yellow-200 font-medium scale-[1.01] shadow-md"
@@ -79,10 +95,10 @@ const Table = ({ items, setItems, highlightedItemId }) => {
                       <td className="border border-gray-300 px-6 py-3 text-center">
                         {index + 1}
                       </td>
-                      <td className="border border-gray-300 px-6 py-3">
+                      <td className="border border-gray-300 px-6 py-3 text-center">
                         {i.itemCode}
                       </td>
-                      <td className="border border-gray-300 px-6 py-3">
+                      <td className="border border-gray-300 px-6 py-3 text-center">
                         {i.product}
                       </td>
 

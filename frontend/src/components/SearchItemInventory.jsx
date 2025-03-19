@@ -8,11 +8,11 @@ const SearchItemInventory = ({ onItemHighlight, name }) => {
   const [selectedItem, setSelectedItem] = useState(-1);
   const resultsRef = useRef(null);
 
-//   console.log("Input=",input)
-//   console.log("filtered res",results)
-  
+  //   console.log("Input=",input)
+  //   console.log("filtered res",results)
+
   useEffect(() => {
-      console.log("Updated input value:", input);
+    console.log("Updated input value:", input);
     //   console.log("filtered res",results)
   }, [input]);
 
@@ -28,16 +28,14 @@ const SearchItemInventory = ({ onItemHighlight, name }) => {
       if (selectedElement) {
         selectedElement.scrollIntoView({
           block: "nearest",
-          behavior: "smooth"
+          behavior: "smooth",
         });
       }
     }
   }, [selectedItem]);
 
-
   // fetch the data and filtered the result that is to be shown in the searchbar
   const fetchData = (value) => {
-
     // handling the empty values -> makes the result array empty
     if (!value.trim()) {
       setResults([]);
@@ -50,9 +48,13 @@ const SearchItemInventory = ({ onItemHighlight, name }) => {
         .then((res) => res.json())
         .then((data) => {
           const filteredResults = data.filter((item) => {
-            return item && item.product && item.product.toLowerCase().includes(value.toLowerCase());
+            return (
+              item &&
+              item.product &&
+              item.product.toLowerCase().includes(value.toLowerCase())
+            );
           });
-        //   console.log("fr",filteredResults)
+          //   console.log("fr",filteredResults)
           setResults(filteredResults);
           setShowResults(true);
         });
@@ -70,25 +72,27 @@ const SearchItemInventory = ({ onItemHighlight, name }) => {
 
   const handleResultClick = (result) => {
     // Set the formatted input
-    const formattedInput = `${result.product} - ${result.quantity || 1} - ${result.mrp || 0}`;
+    const formattedInput = `${result.product} - ${result.quantity || 1} - ${
+      result.mrp || 0
+    }`;
     setInput(formattedInput);
     setShowResults(false);
   };
 
   const onItemSelect = (item) => {
-    setInput(item.product)
-    setShowResults(false)
-    console.log("item selected:", item)
+    setInput(item.product);
+    setShowResults(false);
+    console.log("item selected:", item);
 
-    onItemHighlight(item)
-    // setInput("")
-  }
+    onItemHighlight(item);
+    setInput("");
+  };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-    //   console.log("Product entered = ", results[selectedItem].product)
-    //   setInput(results[selectedItem].product);
-      onItemSelect(results[selectedItem])
+      //   console.log("Product entered = ", results[selectedItem].product)
+      //   setInput(results[selectedItem].product);
+      onItemSelect(results[selectedItem]);
     } else if (e.key === "ArrowUp" && results.length > 0) {
       e.preventDefault();
       setSelectedItem((prev) => (prev <= 0 ? results.length - 1 : prev - 1));
@@ -110,42 +114,42 @@ const SearchItemInventory = ({ onItemHighlight, name }) => {
           className="outline-none bg-transparent w-full text-[15px] text-black placeholder-gray-400"
           value={input}
           onChange={(e) => handleChange(e.target.value)}
-        //   onFocus={() => {
-        //     if (input.trim() && results.length > 0 && !input.includes(" - ")) {
-        //       setShowResults(true);
-        //     }
-        //   }}
+          //   onFocus={() => {
+          //     if (input.trim() && results.length > 0 && !input.includes(" - ")) {
+          //       setShowResults(true);
+          //     }
+          //   }}
           onKeyDown={handleKeyDown}
         />
       </div>
 
       {/* Search Results */}
-      {showResults && results.length > 0 && input.trim() !== "" && !input.includes(" - ") && (
-        <div 
-          ref={resultsRef}
-          className="absolute top-[75px] w-[90%] bg-white border border-gray-300 flex flex-col shadow-md max-h-[200px] overflow-y-auto scrollbar-hide z-10"
-        >
-          {results.map((result, index) => (
-            <div
-              key={result._id || result.itemCode}
-              onClick={() => handleResultClick(result)}
-              role="button"
-              tabIndex={0}
-              className={
-                selectedItem === index 
-                  ? "p-3 bg-blue-100 font-semibold text-[13px] cursor-pointer focus:outline-none" 
-                  : "p-3 active:bg-[#efefef] font-semibold text-[13px] cursor-pointer focus:outline-none focus:bg-[#e0e0e0]"
-              }
-            >
-              {result?.product || "No Item Code"}
-            </div>
-          ))}
-        </div>
-      )}
+      {showResults &&
+        results.length > 0 &&
+        input.trim() !== "" && (
+          <div
+            ref={resultsRef}
+            className="absolute top-[75px] w-[90%] bg-white border border-gray-300 flex flex-col shadow-md max-h-[200px] overflow-y-auto scrollbar-hide z-10"
+          >
+            {results.map((result, index) => (
+              <div
+                key={result._id || result.itemCode}
+                onClick={() => onItemSelect(result)}
+                role="button"
+                tabIndex={0}
+                className={
+                  selectedItem === index
+                    ? "p-3 bg-[#efefef] font-semibold text-[13px] cursor-pointer focus:outline-none"
+                    : "p-3 active:bg-[#efefef] font-semibold text-[13px] cursor-pointer focus:outline-none focus:bg-[#e0e0e0]"
+                }
+              >
+                {result?.product || "No Item Code"}
+              </div>
+            ))}
+          </div>
+        )}
     </div>
   );
 };
 
 export default SearchItemInventory;
-
-
