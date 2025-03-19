@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SlideBar from "../components/SlideBar";
-import SearchItem from "../components/SearchItem";
+import SearchItemInventory from "../components/SearchItemInventory";
 import Table from "../components/Table";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ const InventoryPage = () => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [items, setItems] = useState([]);
+  const [highlightedItemId, setHighlightedItemId] = useState(null);
 
   const handleAddClick = () => {
     setShowModal(true);
@@ -25,7 +26,17 @@ const InventoryPage = () => {
   };
 
   const handleItemAdded = (newItem) => {
-    setItems(prevItems => [...prevItems, newItem]);
+    setItems((prevItems) => [...prevItems, newItem]);
+  };
+
+  const handleHighlightRecord = (item) => {
+    console.log("Item highlighted ", item);
+    setHighlightedItemId(item.itemCode || item._id);
+    
+    // Automatically clear the highlight after 3 seconds
+    setTimeout(() => {
+      setHighlightedItemId(null);
+    }, 1500);
   };
 
   // Function to refresh items
@@ -46,19 +57,19 @@ const InventoryPage = () => {
         <SlideBar />
         <div className="w-[100%] flex flex-col items-center">
           <div className="relative w-full">
-            <SearchItem />
+            <SearchItemInventory name="Search Product" onItemHighlight={handleHighlightRecord} />
           </div>
-          <Table items={items} setItems={setItems} />
+          <Table items={items} setItems={setItems} highlightedItemId={highlightedItemId} />
           <div className="flex gap-6 self-end mt-10 mr-15">
             <Button name="Add Item" onClick={handleAddClick} />
             <Button name="Generate Bill" onClick={handleGenerateBill} />
           </div>
         </div>
       </div>
-      <AddItemsModal 
-        isOpen={showModal} 
-        onClose={handleCloseModal} 
-        onItemAdded={handleItemAdded} 
+      <AddItemsModal
+        isOpen={showModal}
+        onClose={handleCloseModal}
+        onItemAdded={handleItemAdded}
       />
     </div>
   );

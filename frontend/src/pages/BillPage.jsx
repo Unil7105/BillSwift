@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SlideBar from "../components/SlideBar";
-import SearchItem from "../components/SearchItem";
+import SearchItem from "../components/SearchItemBill";
 import Table from "../components/Table";
 
 const BillPage = () => {
@@ -15,10 +15,10 @@ const BillPage = () => {
       product: item.product,
       quantity: item.quantity || 1,
       mrp: item.mrp || 0,
-      netamt: (item.quantity || 1) * (item.mrp || 0)
+      netamt: (item.quantity || 1) * (item.mrp || 0),
     };
-    
-    setItems(prevItems => [...prevItems, newItem]);
+
+    setItems((prevItems) => [...prevItems, newItem]);
   };
 
   return (
@@ -35,7 +35,11 @@ const BillPage = () => {
               Print
             </button>
             <div className="border text-[15px] p-3 bg-gray-900 text-white rounded-[10px]">
-              Total: {items.reduce((sum, item) => sum + (item?.netamt || 0), 0).toLocaleString()} Rs
+              Total:{" "}
+              {items
+                .reduce((sum, item) => sum + (item?.netamt || 0), 0)
+                .toLocaleString()}{" "}
+              Rs
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaSearch } from "react-icons/fa";
 
-const SearchItem = ({ onItemSelect }) => {
+const SearchItemBill = ({ onItemSelect, name }) => {
   const [input, setInput] = useState("");
   const [results, setResults] = useState([]);
   const [showResults, setShowResults] = useState(true);
@@ -112,7 +112,7 @@ const SearchItem = ({ onItemSelect }) => {
         <FaSearch className="text-gray-500 mr-2 text-[15px]" />
         <input
           type="text"
-          placeholder="Search Item"
+          placeholder={name}
           className="outline-none bg-transparent w-full text-[15px] text-black placeholder-gray-400"
           value={input}
           onChange={(e) => handleChange(e.target.value)}
@@ -152,6 +152,6 @@ const SearchItem = ({ onItemSelect }) => {
   );
 };
 
-export default SearchItem;
+export default SearchItemBill;
 
 

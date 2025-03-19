@@ -4,7 +4,7 @@ import { MdDelete } from "react-icons/md";
 import EditItemsModal from "./EditItemsModal";
 import axios from "axios";
 
-const Table = ({ items, setItems }) => {
+const Table = ({ items, setItems, highlightedItemId }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
 
@@ -59,52 +59,65 @@ const Table = ({ items, setItems }) => {
             </thead>
             <tbody>
               {items && items.length > 0 ? (
-                items.map((i, index) => (
-                  <tr
-                    key={index}
-                    className="bg-white text-black even:bg-gray-100 text-center"
-                  >
-                    <td className="border border-gray-300 px-6 py-3 text-center">
-                      {index + 1}
-                    </td>
-                    <td className="border border-gray-300 px-6 py-3">
-                      {i.itemCode}
-                    </td>
-                    <td className="border border-gray-300 px-6 py-3">
-                      {i.product}
-                    </td>
+                items.map((i, index) => {
+                  const isHighlighted =
+                    i.itemCode === highlightedItemId ||
+                    i._id === highlightedItemId;
 
-                    <td className="border border-gray-300 px-6 py-3 text-center cursor-pointer group">
-                      <div className="flex items-center justify-center space-x-2">
-                        <HiPencilAlt
-                          onClick={() => handleEditClick(i._id)}
-                          className="text-xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
-                        />
-                        {i.quantity}
-                      </div>
-                    </td>
+                  return (
+                    <tr
+                      key={i.itemCode || i._id}
+                      className={`
+                      border-b transition-all duration-100
+                      ${
+                        isHighlighted
+                          ? "bg-yellow-200 font-medium scale-[1.01] shadow-md"
+                          : "hover:bg-gray-50"
+                      }
+                    `}
+                    >
+                      <td className="border border-gray-300 px-6 py-3 text-center">
+                        {index + 1}
+                      </td>
+                      <td className="border border-gray-300 px-6 py-3">
+                        {i.itemCode}
+                      </td>
+                      <td className="border border-gray-300 px-6 py-3">
+                        {i.product}
+                      </td>
 
-                    <td className="border border-gray-300 px-6 py-3 text-center cursor-pointer group">
-                      <div className="flex items-center justify-center space-x-2">
-                        <HiPencilAlt
-                          onClick={() => handleEditClick(i._id)}
-                          className="text-xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
-                        />
-                        {i.mrp}
-                      </div>
-                    </td>
+                      <td className="border border-gray-300 px-6 py-3 text-center cursor-pointer group">
+                        <div className="flex items-center justify-center space-x-2">
+                          <HiPencilAlt
+                            onClick={() => handleEditClick(i._id)}
+                            className="text-xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+                          />
+                          {i.quantity}
+                        </div>
+                      </td>
 
-                    <td className="border border-gray-300 px-6 py-3 text-center cursor-pointer group">
-                      <div className="flex items-center justify-center space-x-2">
-                        {i.netamt}
-                        <MdDelete
-                          onClick={() => handleDeleteClick(i._id)}
-                          className="text-xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                      <td className="border border-gray-300 px-6 py-3 text-center cursor-pointer group">
+                        <div className="flex items-center justify-center space-x-2">
+                          <HiPencilAlt
+                            onClick={() => handleEditClick(i._id)}
+                            className="text-xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+                          />
+                          {i.mrp}
+                        </div>
+                      </td>
+
+                      <td className="border border-gray-300 px-6 py-3 text-center cursor-pointer group">
+                        <div className="flex items-center justify-center space-x-2">
+                          {i.netamt}
+                          <MdDelete
+                            onClick={() => handleDeleteClick(i._id)}
+                            className="text-xl cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
                   <td colSpan="6" className="text-center p-4 text-gray-500">
