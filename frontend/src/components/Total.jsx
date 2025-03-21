@@ -6,7 +6,7 @@ const Total = () => {
 
   const fetchAmt = async () => {
     try {
-      const res = await fetch("http://localhost:5001/api/items");
+      const res = await fetch("https://billswift-e2jh.onrender.com/api/items");
       if (!res.ok) throw new Error("Failed to fetch data");
 
       const data = await res.json();

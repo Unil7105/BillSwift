@@ -44,7 +44,7 @@ const SearchItemInventory = ({ onItemHighlight, name }) => {
 
     // handling the non empty values -> filtered the result as per the input
     if (value.trim()) {
-      fetch("http://localhost:5001/")
+      fetch("https://billswift-e2jh.onrender.com/")
         .then((res) => res.json())
         .then((data) => {
           const filteredResults = data.filter((item) => {

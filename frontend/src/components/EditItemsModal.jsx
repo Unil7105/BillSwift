@@ -14,7 +14,7 @@ const EditItemsModal = ({ isOpen, onClose, itemId, onItemUpdated }) => {
   useEffect(() => {
     if (isOpen && itemId) {
       axios
-        .get("http://localhost:5001/getItem/" + itemId)
+        .get("https://billswift-e2jh.onrender.com/getItem/" + itemId)
         .then((result) => {
           const item = result.data;
           // Store the original item for reference

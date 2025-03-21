@@ -38,7 +38,7 @@ const SearchItemBill = ({ onItemSelect, name }) => {
 
     // Only search if the input doesn't have the format "product - quantity - price"
     if (!value.includes(" - ")) {
-      fetch("http://localhost:5001/")
+      fetch("https://billswift-e2jh.onrender.com/")
         .then((res) => res.json())
         .then((data) => {
           const filteredResults = data.filter((item) => {

@@ -42,7 +42,7 @@ const InventoryPage = () => {
   // Function to refresh items
   const fetchItems = () => {
     axios
-      .get("http://localhost:5001")
+      .get("https://billswift-e2jh.onrender.com")
       .then((result) => setItems(result.data))
       .catch((err) => console.log(err));
   };
