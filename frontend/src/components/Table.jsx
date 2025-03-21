@@ -25,7 +25,7 @@ const Table = ({ items, setItems, highlightedItemId }) => {
   const handleDeleteClick = (itemId) => {
     // Confirm before deleting
     axios
-      .delete(`http://localhost:5001/deleteItem/${itemId}`)
+      .delete(`https://billswift-e2jh.onrender.com/${itemId}`)
       .then(() => {
         // After successful deletion, update items state directly
         setItems(items.filter((item) => item._id !== itemId));
