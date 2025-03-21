@@ -12,7 +12,7 @@ const AddItemsModal = ({ isOpen, onClose, onItemAdded }) => {
     
     const netamt = Number(quantity) * Number(mrp);
     
-    axios.post("http://localhost:5001/createItem", {
+    axios.post("https://billswift-e2jh.onrender.com", {
       itemCode, 
       product, 
       quantity: Number(quantity), 

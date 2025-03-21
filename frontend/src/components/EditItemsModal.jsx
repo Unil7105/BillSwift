@@ -46,7 +46,7 @@ const EditItemsModal = ({ isOpen, onClose, itemId, onItemUpdated }) => {
     };
     
     axios
-      .put("http://localhost:5001/updateItem/" + itemId, updatedItem)
+      .put("https://billswift-e2jh.onrender.com/updateItem/" + itemId, updatedItem)
       .then((response) => {
         // Call the callback with the updated item to update parent state
         if (onItemUpdated) {
